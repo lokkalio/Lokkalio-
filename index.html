@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LOKKALIO — Branduri locale. Prețuri pe bune.</title>
+<style>
+:root{--ink:#171717;--muted:#707070;--line:#e9e9e9;--bg:#f7f7f5;--card:#fff;--accent:#171717}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+a{text-decoration:none;color:inherit}.top{background:#171717;color:#fff;text-align:center;padding:9px;font-size:12px;letter-spacing:.2px}
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.nav{max-width:1200px;margin:auto;height:72px;display:flex;align-items:center;gap:28px;padding:0 22px}
+.logo{font-size:25px;font-weight:900;letter-spacing:-1.5px}.search{flex:1;display:flex;background:#f4f4f2;border-radius:8px;overflow:hidden}
+.search input{border:0;background:transparent;padding:13px 16px;width:100%;outline:none;font-size:14px}.search button{border:0;background:transparent;padding:0 16px;cursor:pointer}
+.navlinks{display:flex;gap:18px;font-size:13px}.navlinks span{cursor:pointer}.cart{position:relative}
+.badge{position:absolute;top:-9px;right:-10px;background:#171717;color:#fff;border-radius:99px;font-size:10px;padding:3px 6px}
+.categories{max-width:1200px;margin:auto;padding:14px 22px;display:flex;gap:24px;overflow:auto;white-space:nowrap;font-size:13px}.categories a:first-child{font-weight:700}
+.hero{max-width:1200px;margin:24px auto;padding:0 22px}.heroBox{background:#deddd8;min-height:410px;border-radius:16px;padding:62px 58px;display:flex;align-items:center}
+.heroText{max-width:570px}.eyebrow{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px}
+h1{font-size:54px;line-height:1.02;letter-spacing:-3px;margin:0 0 18px}.hero p{font-size:17px;line-height:1.5;color:#414141;max-width:480px}
+.btn{display:inline-block;background:#171717;color:white;padding:14px 22px;border-radius:7px;font-size:13px;font-weight:700;margin-top:14px}
+section{max-width:1200px;margin:44px auto;padding:0 22px}.sectionHead{display:flex;justify-content:space-between;align-items:end;margin-bottom:20px}
+h2{font-size:25px;letter-spacing:-.8px;margin:0}.view{font-size:13px;text-decoration:underline}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.product{background:#fff;border-radius:10px;overflow:hidden;cursor:pointer}.pic{aspect-ratio:1/1;background:#e7e6e1;display:flex;align-items:center;justify-content:center;font-size:42px}.info{padding:14px}.brand{font-size:11px;color:#777;text-transform:uppercase;letter-spacing:.7px}.name{font-size:14px;margin:6px 0}.price{font-weight:800}.old{font-size:12px;color:#999;text-decoration:line-through;margin-left:7px;font-weight:400}.chips{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}.chip{background:#fff;border:1px solid var(--line);border-radius:10px;padding:25px 12px;text-align:center;font-size:13px;font-weight:700}
+footer{margin-top:60px;background:#171717;color:#fff;padding:45px 22px}.foot{max-width:1200px;margin:auto;display:flex;justify-content:space-between;gap:30px}.foot small{color:#aaa;line-height:1.6}
+@media(max-width:800px){.nav{gap:12px}.navlinks{display:none}.heroBox{padding:40px 26px;min-height:390px}.heroBox h1{font-size:42px}.grid{grid-template-columns:repeat(2,1fr)}.chips{grid-template-columns:repeat(3,1fr)}.foot{flex-direction:column}}
+
+.product{transition:transform .18s,box-shadow .18s}.product:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,.07)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal.show{display:flex}
+.modalCard{background:#fff;width:min(860px,100%);border-radius:16px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;box-shadow:0 20px 60px rgba(0,0,0,.2)}.modalVisual{background:#e7e6e1;min-height:430px;display:flex;align-items:center;justify-content:center;font-size:110px}.modalInfo{padding:40px}.close{float:right;border:0;background:#f2f2f0;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:18px}.modalBrand{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#777}.modalTitle{font-size:32px;letter-spacing:-1.5px;margin:10px 0}.modalDesc{color:#666;line-height:1.55;font-size:14px}.modalPrice{font-size:23px;font-weight:800;margin:22px 0}.sizes{display:flex;gap:8px;margin:10px 0 18px}.size{border:1px solid #ddd;background:white;border-radius:6px;padding:10px 15px;cursor:pointer}.size.active{background:#171717;color:#fff;border-color:#171717}.cartPanel{position:fixed;right:0;top:0;height:100%;width:min(390px,100%);background:#fff;z-index:30;transform:translateX(100%);transition:.25s;padding:26px;box-shadow:-10px 0 40px rgba(0,0,0,.12)}.cartPanel.show{transform:translateX(0)}.cartItem{display:flex;gap:12px;padding:18px 0;border-bottom:1px solid #eee}.cartEmoji{width:60px;height:60px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:28px;border-radius:8px}.cartTotal{display:flex;justify-content:space-between;font-weight:800;font-size:18px;margin:24px 0}
+@media(max-width:800px){.modalCard{grid-template-columns:1fr}.modalVisual{min-height:230px}.modalInfo{padding:26px}}
+
+.partnerHero{max-width:1200px;margin:30px auto;padding:0 22px}.partnerBox{background:#171717;color:#fff;border-radius:16px;padding:45px;display:flex;justify-content:space-between;gap:30px;align-items:center}.partnerBox h2{font-size:32px;letter-spacing:-1.3px;margin-bottom:10px}.partnerBox p{color:#cfcfcf;max-width:570px;line-height:1.5}.partnerBtn{display:inline-block;background:#fff;color:#171717;padding:14px 22px;border-radius:7px;font-size:13px;font-weight:800;white-space:nowrap;cursor:pointer;border:0}
+.partnerModal .modalCard{max-width:760px;display:block}.partnerForm{padding:38px}.field{margin:14px 0}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:7px}.field input,.field select{width:100%;padding:13px;border:1px solid #ddd;border-radius:7px;font-size:14px;outline:none}.dash{max-width:1200px;margin:25px auto;padding:0 22px}.dashCard{background:#fff;border:1px solid #eee;border-radius:12px;padding:20px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.stat{background:#f7f7f5;border-radius:10px;padding:18px}.stat small{color:#777}.stat strong{display:block;font-size:25px;margin-top:7px}.dashTable{width:100%;border-collapse:collapse;font-size:13px}.dashTable th,.dashTable td{text-align:left;padding:13px 8px;border-bottom:1px solid #eee}.status{font-size:11px;background:#eee;border-radius:99px;padding:5px 8px}
+@media(max-width:800px){.partnerBox{padding:30px;flex-direction:column;align-items:flex-start}.stats{grid-template-columns:1fr}.partnerBtn{white-space:normal}}
+
+/* LOKKALIO Admin */
+.admin-overlay{position:fixed;inset:0;background:rgba(15,23,42,.58);z-index:1000;display:none;padding:24px;overflow:auto}
+.admin-overlay.open{display:block}
+.admin-panel{max-width:1180px;margin:0 auto;background:#fff;border-radius:24px;box-shadow:0 25px 80px rgba(0,0,0,.22);overflow:hidden}
+.admin-head{background:#111827;color:#fff;padding:22px 26px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.admin-head h2{margin:0;font-size:24px}
+.admin-head p{margin:5px 0 0;color:#cbd5e1;font-size:13px}
+.admin-close{border:0;background:#fff;color:#111827;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer}
+.admin-body{padding:24px}
+.admin-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.admin-stat{border:1px solid #e5e7eb;border-radius:16px;padding:18px;background:#fff}
+.admin-stat span{display:block;color:#64748b;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.admin-stat strong{display:block;font-size:27px;margin-top:8px}
+.admin-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.admin-card{border:1px solid #e5e7eb;border-radius:18px;overflow:hidden}
+.admin-card h3{margin:0;padding:17px 18px;border-bottom:1px solid #e5e7eb;font-size:16px}
+.admin-table{width:100%;border-collapse:collapse;font-size:13px}
+.admin-table th,.admin-table td{padding:13px 14px;border-bottom:1px solid #f1f5f9;text-align:left}
+.admin-table th{color:#64748b;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+.status{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800}
+.status.pending{background:#fff7ed;color:#c2410c}
+.status.active{background:#ecfdf5;color:#047857}
+.status.review{background:#eff6ff;color:#1d4ed8}
+.admin-actions{display:flex;gap:7px}
+.admin-actions button{border:0;border-radius:8px;padding:7px 9px;font-size:11px;font-weight:800;cursor:pointer}
+.approve{background:#111827;color:#fff}.reject{background:#f1f5f9;color:#334155}
+.admin-footer{margin-top:20px;background:#f8fafc;border-radius:16px;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.admin-footer label{font-size:13px;font-weight:700}.commission{display:flex;align-items:center;gap:8px}
+.commission input{width:70px;border:1px solid #cbd5e1;border-radius:9px;padding:9px;font-weight:700}
+.save-admin{border:0;background:#111827;color:#fff;border-radius:10px;padding:10px 15px;font-weight:800;cursor:pointer}
+@media(max-width:800px){.admin-grid{grid-template-columns:repeat(2,1fr)}.admin-layout{grid-template-columns:1fr}.admin-overlay{padding:10px}.admin-body{padding:14px}.admin-table{font-size:12px}.admin-table th,.admin-table td{padding:10px 8px}}
+@media(max-width:520px){.admin-grid{grid-template-columns:1fr 1fr}.admin-head{padding:17px}.admin-head h2{font-size:20px}.admin-footer{align-items:flex-start;flex-direction:column}}
+
+
+/* LOKKALIO Account */
+.account-overlay{position:fixed;inset:0;background:rgba(15,23,42,.58);z-index:1100;display:none;padding:20px;overflow:auto}
+.account-overlay.open{display:flex;align-items:center;justify-content:center}
+.account-box{width:min(460px,100%);background:#fff;border-radius:22px;box-shadow:0 25px 80px rgba(0,0,0,.25);overflow:hidden}
+.account-top{padding:24px 24px 16px;display:flex;justify-content:space-between;align-items:center}
+.account-top h2{margin:0;font-size:23px}.account-close{border:0;background:#f1f5f9;border-radius:9px;padding:8px 11px;font-weight:800;cursor:pointer}
+.account-tabs{display:grid;grid-template-columns:1fr 1fr;margin:0 24px 18px;background:#f1f5f9;border-radius:10px;padding:4px}
+.account-tabs button{border:0;background:transparent;padding:10px;border-radius:8px;font-weight:800;cursor:pointer}
+.account-tabs button.active{background:#111827;color:#fff}
+.account-form{padding:0 24px 24px}.account-form label{display:block;font-size:12px;font-weight:800;margin:13px 0 6px}
+.account-form input,.account-form select{width:100%;box-sizing:border-box;border:1px solid #dbe1e8;border-radius:10px;padding:12px;font-size:14px}
+.account-submit{width:100%;margin-top:18px;border:0;background:#111827;color:#fff;border-radius:11px;padding:13px;font-weight:800;cursor:pointer}
+.account-note{font-size:12px;color:#64748b;text-align:center;margin:12px 0 0}
+.account-welcome{padding:0 24px 24px}.account-welcome .welcome-card{background:#f8fafc;border-radius:15px;padding:18px;margin-bottom:14px}
+.account-welcome h3{margin:0 0 6px}.account-welcome p{margin:0;color:#64748b;font-size:13px}
+.account-actions{display:grid;gap:9px}.account-actions button{border:1px solid #e2e8f0;background:#fff;border-radius:10px;padding:11px;font-weight:800;cursor:pointer}
+
+</style>
+</head>
+<body>
+<div class="top">Livrare gratuită la comenzi de peste 199 lei</div>
+<header>
+  <div class="nav">
+    <div class="logo">LOKKALIO</div>
+    <div class="search"><input id="q" placeholder="Caută produse, branduri..."><button onclick="search()">⌕</button></div>
+    <div class="navlinks"><span>♡</span><span>Cont</span><span class="cart">🛒<b class="badge" id="count">0</b></span></div>
+  </div>
+  <nav class="categories">
+    <a href="#produse">Toate</a><a href="#produse">Modă</a><a href="#produse">Încălțăminte</a><a href="#produse">Beauty</a><a href="#produse">Casă</a><a href="#produse">Copii</a><a href="#produse">Accesorii</a><a href="#produse">Oferte</a>
+  </nav>
+</header>
+
+<main>
+<div class="hero"><div class="heroBox"><div class="heroText">
+  <div class="eyebrow">Descoperă branduri locale</div>
+  <h1>Produse bune.<br>Prețuri pe bune.</h1>
+  <p>Un singur loc pentru branduri și producători locali. Descoperă produse create aproape de tine, la prețuri corecte.</p>
+  <a class="btn" href="#produse">Cumpără acum →</a>
+</div></div></div>
+
+<section><div class="sectionHead"><h2>Cumpără după categorie</h2></div>
+<div class="chips"><div class="chip">👕<br>Modă</div><div class="chip">👟<br>Încălțăminte</div><div class="chip">✨<br>Beauty</div><div class="chip">🏠<br>Casă</div><div class="chip">🎁<br>Cadouri</div><div class="chip">🔥<br>Oferte</div></div></section>
+
+<section id="produse"><div class="sectionHead"><h2>Descoperite pentru tine</h2><span class="view">Vezi toate →</span></div>
+<div class="grid" id="grid">
+  <div class="product" data-name="hanorac urban atelier nord" onclick="openProduct('Hanorac Urban','Atelier Nord',149,'🧥','Hanorac confortabil, croială modernă, realizat de un brand local.')"><div class="pic">🧥</div><div class="info"><div class="brand">Atelier Nord</div><div class="name">Hanorac Urban</div><div class="price">149 lei</div></div></div>
+  <div class="product" data-name="geanta piele maro studio maro" onclick="openProduct('Geantă din piele','Studio Maro',229,'👜','Geantă din piele, lucrată local, potrivită pentru zi cu zi.')"><div class="pic">👜</div><div class="info"><div class="brand">Studio Maro</div><div class="name">Geantă din piele</div><div class="price">229 lei <span class="old">279 lei</span></div></div></div>
+  <div class="product" data-name="lumanare parfumata casa alba" onclick="openProduct('Lumânare parfumată','Casa Albă',59,'🕯️','Lumânare parfumată turnată manual, creată de un producător local.')"><div class="pic">🕯️</div><div class="info"><div class="brand">Casa Albă</div><div class="name">Lumânare parfumată</div><div class="price">59 lei</div></div></div>
+  <div class="product" data-name="tricou basic made here" onclick="openProduct('Tricou Basic','Made Here',79,'👕','Tricou minimalist, confortabil și ușor de purtat în fiecare zi.')"><div class="pic">👕</div><div class="info"><div class="brand">Made Here</div><div class="name">Tricou Basic</div><div class="price">79 lei</div></div></div>
+</div></section>
+
+<section><div class="sectionHead"><h2>Branduri de urmărit</h2><span class="view">Vezi toate →</span></div>
+<div class="chips"><div class="chip">ATELIER NORD</div><div class="chip">STUDIO MARO</div><div class="chip">MADE HERE</div><div class="chip">CASA ALBĂ</div><div class="chip">NOVA HOME</div><div class="chip">LUNA</div></div></section>
+</main>
+
+
+<div class="modal" id="productModal" onclick="if(event.target===this)closeProduct()">
+  <div class="modalCard">
+    <div class="modalVisual" id="modalVisual">🧥</div>
+    <div class="modalInfo">
+      <button class="close" onclick="closeProduct()">×</button>
+      <div class="modalBrand" id="modalBrand"></div>
+      <div class="modalTitle" id="modalTitle"></div>
+      <div class="modalDesc" id="modalDesc"></div>
+      <div class="modalPrice" id="modalPrice"></div>
+      <div style="font-size:13px;font-weight:700">Variantă</div>
+      <div class="sizes"><button class="size active">S</button><button class="size">M</button><button class="size">L</button><button class="size">XL</button></div>
+      <button class="btn" style="border:0;cursor:pointer;width:100%" onclick="addCurrentToCart()">Adaugă în coș</button>
+    </div>
+  </div>
+</div>
+
+<div class="cartPanel" id="cartPanel">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h2>Coșul tău</h2><button class="close" onclick="closeCart()">×</button></div>
+  <div id="cartItems"><p style="color:#777;font-size:14px">Coșul este gol.</p></div>
+  <div class="cartTotal"><span>Total</span><span id="cartTotal">0 lei</span></div>
+  <button class="btn" style="border:0;width:100%;cursor:pointer" onclick="checkout()">Continuă spre plată →</button>
+</div>
+
+<section class="partnerHero">
+  <div class="partnerBox">
+    <div>
+      <div class="eyebrow" style="color:#aaa">Pentru branduri și producători</div>
+      <h2>Vinde pe LOKKALIO.</h2>
+      <p>Ajungi la clienți noi, îți gestionezi produsele și comenzile dintr-un singur loc. Tu îți construiești brandul, noi îți oferim platforma.</p>
+    </div>
+    <button class="partnerBtn" onclick="openPartner()">Devino partener →</button>
+  </div>
+</section>
+
+<div class="modal partnerModal" id="partnerModal" onclick="if(event.target===this)closePartner()">
+  <div class="modalCard">
+    <div class="partnerForm">
+      <button class="close" onclick="closePartner()">×</button>
+      <div class="modalBrand">LOKKALIO PARTNERS</div>
+      <div class="modalTitle">Devino partener</div>
+      <p style="color:#666;font-size:14px;line-height:1.5">Completează datele de bază. În versiunea reală, aici vom avea verificarea firmei și contractul de parteneriat.</p>
+      <div class="field"><label>Numele brandului</label><input id="brandInput" placeholder="Ex. Atelier Nord"></div>
+      <div class="field"><label>Email</label><input id="emailInput" type="email" placeholder="contact@brand.ro"></div>
+      <div class="field"><label>Categorie principală</label><select><option>Modă</option><option>Beauty</option><option>Casă</option><option>Copii</option><option>Accesorii</option><option>Altele</option></select></div>
+      <button class="btn" style="border:0;cursor:pointer" onclick="registerPartner()">Trimite cererea →</button>
+    </div>
+  </div>
+</div>
+
+<section class="dash" id="dashboard" style="display:none">
+  <div class="sectionHead"><h2>Panoul partenerului</h2><span class="view">Atelier Nord · cont demo</span></div>
+  <div class="dashCard">
+    <div class="stats">
+      <div class="stat"><small>Comenzi</small><strong>24</strong></div>
+      <div class="stat"><small>Vânzări</small><strong>3.480 lei</strong></div>
+      <div class="stat"><small>Produse active</small><strong>18</strong></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:24px 0 10px"><b>Ultimele comenzi</b><button class="btn" style="margin:0;border:0;cursor:pointer;padding:9px 13px" onclick="alert('În versiunea reală, aici adaugi un produs.')">+ Adaugă produs</button></div>
+    <table class="dashTable"><tr><th>Comandă</th><th>Produs</th><th>Total</th><th>Status</th></tr>
+      <tr><td>#1048</td><td>Hanorac Urban</td><td>149 lei</td><td><span class="status">Nouă</span></td></tr>
+      <tr><td>#1042</td><td>Tricou Basic</td><td>79 lei</td><td><span class="status">Expediată</span></td></tr>
+      <tr><td>#1037</td><td>Hanorac Urban</td><td>298 lei</td><td><span class="status">Livrată</span></td></tr>
+    </table>
+  </div>
+</section>
+<footer><div class="foot"><div><div class="logo">LOKKALIO</div><small>Branduri locale. Prețuri pe bune.</small></div><small>Despre noi &nbsp; · &nbsp; Devino partener &nbsp; · &nbsp; Contact<br>© 2026 LOKKALIO</small></div></footer>
+
+<script>
+let currentProduct=null, cart=[];
+const money=n=>n.toLocaleString('ro-RO')+' lei';
+
+function openProduct(name,brand,price,emoji,desc){
+  currentProduct={name,brand,price,emoji,desc};
+  document.getElementById('modalVisual').textContent=emoji;
+  document.getElementById('modalBrand').textContent=brand;
+  document.getElementById('modalTitle').textContent=name;
+  document.getElementById('modalDesc').textContent=desc;
+  document.getElementById('modalPrice').textContent=money(price);
+  document.getElementById('productModal').classList.add('show');
+}
+function closeProduct(){document.getElementById('productModal').classList.remove('show')}
+function addCurrentToCart(){
+  if(!currentProduct)return;
+  const existing=cart.find(x=>x.name===currentProduct.name);
+  if(existing) existing.qty++; else cart.push({...currentProduct,qty:1});
+  closeProduct(); renderCart(); openCart();
+}
+function openCart(){document.getElementById('cartPanel').classList.add('show')}
+function closeCart(){document.getElementById('cartPanel').classList.remove('show')}
+function renderCart(){
+  const box=document.getElementById('cartItems');
+  const total=cart.reduce((s,x)=>s+x.price*x.qty,0);
+  const count=cart.reduce((s,x)=>s+x.qty,0);
+  document.getElementById('count').textContent=count;
+  document.getElementById('cartTotal').textContent=money(total);
+  if(!cart.length){box.innerHTML='<p style="color:#777;font-size:14px">Coșul este gol.</p>';return}
+  box.innerHTML=cart.map((x,i)=>`<div class="cartItem"><div class="cartEmoji">${x.emoji}</div><div style="flex:1"><b>${x.name}</b><div style="font-size:12px;color:#777;margin-top:4px">${x.brand} · ${x.qty} buc.</div><div style="font-weight:700;margin-top:7px">${money(x.price*x.qty)}</div></div><button onclick="removeItem(${i})" style="border:0;background:none;cursor:pointer;color:#888">×</button></div>`).join('');
+}
+function removeItem(i){cart.splice(i,1);renderCart()}
+function checkout(){alert('În versiunea următoare conectăm plata online și livrarea. Pentru moment, coșul funcționează local.')}
+document.querySelector('.cart').addEventListener('click',openCart);
+document.querySelectorAll('.size').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.size').forEach(x=>x.classList.remove('active'));b.classList.add('active')}));
+function search(){const q=document.getElementById('q').value.toLowerCase().trim();document.querySelectorAll('.product').forEach(p=>p.style.display=(!q||p.dataset.name.includes(q))?'block':'none');location.hash='produse'}
+document.getElementById('q').addEventListener('keydown',e=>{if(e.key==='Enter')search()});
+
+function openPartner(){document.getElementById('partnerModal').classList.add('show')}
+function closePartner(){document.getElementById('partnerModal').classList.remove('show')}
+function registerPartner(){
+  const brand=document.getElementById('brandInput').value.trim();
+  const email=document.getElementById('emailInput').value.trim();
+  if(!brand||!email){alert('Completează numele brandului și emailul.');return}
+  closePartner();
+  document.getElementById('dashboard').style.display='block';
+  document.getElementById('dashboard').scrollIntoView({behavior:'smooth'});
+}
+
+// LOKKALIO admin demo
+(function(){
+  const overlay = document.getElementById('adminOverlay');
+  const open = document.getElementById('adminBtn');
+  const close = document.getElementById('adminClose');
+  if(!overlay || !open) return;
+  open.addEventListener('click', ()=>overlay.classList.add('open'));
+  close.addEventListener('click', ()=>overlay.classList.remove('open'));
+  overlay.addEventListener('click', e=>{ if(e.target===overlay) overlay.classList.remove('open'); });
+
+  document.querySelectorAll('.admin-actions .approve').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const row=btn.closest('tr');
+      row.querySelector('.status').className='status active';
+      row.querySelector('.status').textContent='Activ';
+      btn.parentElement.innerHTML='<button class="reject">Dezactivează</button>';
+    });
+  });
+  document.querySelectorAll('.admin-actions .reject').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const row=btn.closest('tr');
+      row.remove();
+    });
+  });
+
+  const input=document.getElementById('commissionInput');
+  const preview=document.getElementById('commissionPreview');
+  document.getElementById('saveAdmin').addEventListener('click', ()=>{
+    preview.textContent=(input.value || 0)+'%';
+    alert('Comisionul demo a fost actualizat la '+(input.value || 0)+'%.');
+  });
+})();
+
+
+// LOKKALIO account demo
+(function(){
+  const overlay=document.getElementById('accountOverlay');
+  const open=document.getElementById('accountBtn');
+  const close=document.getElementById('accountClose');
+  if(!overlay || !open) return;
+
+  const loginTab=document.getElementById('loginTab');
+  const registerTab=document.getElementById('registerTab');
+  const form=document.getElementById('accountForm');
+  const roleWrap=document.getElementById('roleWrap');
+  const role=document.getElementById('accountRole');
+  const nameLabel=document.getElementById('nameLabel');
+  const nameInput=document.getElementById('accountName');
+  const submit=document.getElementById('accountSubmit');
+  const auth=document.getElementById('accountAuth');
+  const welcome=document.getElementById('accountWelcome');
+  const title=document.getElementById('accountTitle');
+  const welcomeTitle=document.getElementById('welcomeTitle');
+  const welcomeText=document.getElementById('welcomeText');
+  let register=false;
+
+  function show(mode){
+    register=mode;
+    loginTab.classList.toggle('active',!mode);
+    registerTab.classList.toggle('active',mode);
+    roleWrap.style.display=mode?'block':'none';
+    nameLabel.style.display=mode?'block':'none';
+    nameInput.style.display=mode?'block':'none';
+    nameInput.required=mode;
+    submit.textContent=mode?'Creează cont':'Intră în cont';
+    title.textContent=mode?'Creează cont':'Intră în cont';
+  }
+
+  open.addEventListener('click',()=>{
+    overlay.classList.add('open');
+    const saved=localStorage.getItem('lokkalioUser');
+    if(saved){
+      const u=JSON.parse(saved);
+      auth.style.display='none'; welcome.style.display='block';
+      title.textContent='Contul meu';
+      welcomeTitle.textContent='Bine ai venit, '+(u.name||'client')+'!';
+      welcomeText.textContent=u.role==='partner'?'Cont de Partener / Brand':'Cont de Client';
+    }else{
+      auth.style.display='block'; welcome.style.display='none'; show(false);
+    }
+  });
+  close.addEventListener('click',()=>overlay.classList.remove('open'));
+  overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.classList.remove('open')});
+  loginTab.addEventListener('click',()=>show(false));
+  registerTab.addEventListener('click',()=>show(true));
+
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    const user={
+      name:register ? nameInput.value : (localStorage.getItem('lokkalioUserName')||'Client'),
+      email:document.getElementById('accountEmail').value,
+      role:register ? role.value : 'client'
+    };
+    localStorage.setItem('lokkalioUser',JSON.stringify(user));
+    localStorage.setItem('lokkalioUserName',user.name);
+    auth.style.display='none'; welcome.style.display='block';
+    title.textContent='Contul meu';
+    welcomeTitle.textContent='Bine ai venit, '+user.name+'!';
+    welcomeText.textContent=user.role==='partner'?'Cont de Partener / Brand creat în demo.':'Cont de Client creat în demo.';
+  });
+
+  document.getElementById('logoutAction').addEventListener('click',()=>{
+    localStorage.removeItem('lokkalioUser');
+    auth.style.display='block'; welcome.style.display='none'; show(false);
+  });
+  document.getElementById('profileAction').addEventListener('click',()=>alert('Profilul va fi conectat la baza de date în etapa următoare.'));
+  document.getElementById('ordersAction').addEventListener('click',()=>alert('Comenzile vor fi conectate la sistemul real de comenzi în etapa următoare.'));
+})();
+
+</script>
+
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-panel">
+    <div class="admin-head">
+      <div>
+        <h2>Panou de administrare LOKKALIO</h2>
+        <p>Controlează marketplace-ul dintr-un singur loc.</p>
+      </div>
+      <button class="admin-close" id="adminClose">Închide</button>
+    </div>
+    <div class="admin-body">
+      <div class="admin-grid">
+        <div class="admin-stat"><span>Comenzi</span><strong>128</strong></div>
+        <div class="admin-stat"><span>Vânzări</span><strong>18.940 lei</strong></div>
+        <div class="admin-stat"><span>Comision platformă</span><strong>2.841 lei</strong></div>
+        <div class="admin-stat"><span>Branduri active</span><strong>27</strong></div>
+      </div>
+
+      <div class="admin-layout">
+        <div class="admin-card">
+          <h3>Branduri în așteptare</h3>
+          <table class="admin-table">
+            <thead><tr><th>Brand</th><th>Categorie</th><th>Status</th><th></th></tr></thead>
+            <tbody id="brandRows">
+              <tr>
+                <td><strong>Atelier Verde</strong></td><td>Beauty</td>
+                <td><span class="status pending">În așteptare</span></td>
+                <td><div class="admin-actions"><button class="approve">Aprobă</button><button class="reject">Respinge</button></div></td>
+              </tr>
+              <tr>
+                <td><strong>Nordic Home</strong></td><td>Casă</td>
+                <td><span class="status pending">În așteptare</span></td>
+                <td><div class="admin-actions"><button class="approve">Aprobă</button><button class="reject">Respinge</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="admin-card">
+          <h3>Produse recente</h3>
+          <table class="admin-table">
+            <thead><tr><th>Produs</th><th>Brand</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Rochie Linen</strong></td><td>Atelier Nord</td><td><span class="status active">Activ</span></td></tr>
+              <tr><td><strong>Set ceramică</strong></td><td>Casa Albă</td><td><span class="status review">Verificare</span></td></tr>
+              <tr><td><strong>Geantă Mini</strong></td><td>Studio Maro</td><td><span class="status active">Activ</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="admin-card">
+          <h3>Comenzi recente</h3>
+          <table class="admin-table">
+            <thead><tr><th>Comandă</th><th>Client</th><th>Total</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>#LK-1048</td><td>Client demo</td><td>329 lei</td><td><span class="status active">Plătită</span></td></tr>
+              <tr><td>#LK-1047</td><td>Client demo</td><td>149 lei</td><td><span class="status review">Procesare</span></td></tr>
+              <tr><td>#LK-1046</td><td>Client demo</td><td>288 lei</td><td><span class="status active">Expediată</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="admin-card">
+          <h3>Control platformă</h3>
+          <table class="admin-table">
+            <tbody>
+              <tr><td><strong>Comision marketplace</strong></td><td><span id="commissionPreview">15%</span></td></tr>
+              <tr><td><strong>Branduri active</strong></td><td>27</td></tr>
+              <tr><td><strong>Produse active</strong></td><td>486</td></tr>
+              <tr><td><strong>Comenzi azi</strong></td><td>9</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="admin-footer">
+        <div class="commission">
+          <label for="commissionInput">Comision marketplace:</label>
+          <input id="commissionInput" type="number" min="0" max="50" value="15">
+          <strong>%</strong>
+        </div>
+        <button class="save-admin" id="saveAdmin">Salvează setarea</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="account-overlay" id="accountOverlay">
+  <div class="account-box">
+    <div class="account-top">
+      <h2 id="accountTitle">Contul meu</h2>
+      <button class="account-close" id="accountClose">Închide</button>
+    </div>
+
+    <div id="accountAuth">
+      <div class="account-tabs">
+        <button class="active" id="loginTab">Intră în cont</button>
+        <button id="registerTab">Creează cont</button>
+      </div>
+
+      <form class="account-form" id="accountForm">
+        <div id="roleWrap" style="display:none">
+          <label>Tip cont</label>
+          <select id="accountRole">
+            <option value="client">Client</option>
+            <option value="partner">Partener / Brand</option>
+          </select>
+        </div>
+        <label id="nameLabel" style="display:none">Nume</label>
+        <input id="accountName" style="display:none" placeholder="Numele tău">
+        <label>Email</label>
+        <input id="accountEmail" type="email" required placeholder="email@exemplu.ro">
+        <label>Parolă</label>
+        <input id="accountPassword" type="password" required placeholder="••••••••">
+        <button class="account-submit" type="submit" id="accountSubmit">Intră în cont</button>
+        <p class="account-note">Demo local — conturile reale vor fi conectate la baza de date în etapa următoare.</p>
+      </form>
+    </div>
+
+    <div class="account-welcome" id="accountWelcome" style="display:none">
+      <div class="welcome-card">
+        <h3 id="welcomeTitle">Bine ai venit!</h3>
+        <p id="welcomeText">Contul tău este activ în această versiune demo.</p>
+      </div>
+      <div class="account-actions">
+        <button id="profileAction">Profilul meu</button>
+        <button id="ordersAction">Comenzile mele</button>
+        <button id="logoutAction">Ieși din cont</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
